@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/assert-dialog.iml" filepath="$PROJECT_DIR$/assert-dialog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/assertdialog/assertdialog.iml" filepath="$PROJECT_DIR$/assertdialog/assertdialog.iml" />
     </modules>
   </component>
 </project>

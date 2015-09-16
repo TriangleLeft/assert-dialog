@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AssertDialog</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_stop">Stop</string>
+    <string name="selected_option">Selected option: %s</string>
+    <string name="uncaught_exception">Uncaught exception on thread %s</string>
+    <string name="assert_fail">Assertion failed</string>
+</resources>
