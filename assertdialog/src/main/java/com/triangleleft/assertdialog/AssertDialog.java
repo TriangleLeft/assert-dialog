@@ -1,4 +1,4 @@
-package com.lekz112.assertdialog;
+package com.triangleleft.assertdialog;
 
 import android.app.AlertDialog;
 import android.content.Context;

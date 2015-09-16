@@ -1,6 +1,6 @@
-package com.lekz112.assertdialog.example;
+package com.triangleleft.assertdialog.example;
 
-import com.lekz112.assertdialog.AssertDialog;
+import com.triangleleft.assertdialog.AssertDialog;
 
 import android.app.Application;
 
