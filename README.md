@@ -1,8 +1,15 @@
 #AssertDialog
 C#-like assert dialog.
-Shows modal dialog when assertion fails blocking current thread.
+Shows modal dialog when assertion fails, blocking current thread.
 
-First you have to init it. Preferable place to do that, is your applicaion's onCreate() method.
+![](misc/assert.png)
+
+Min SDK version - 14
+
+Usage
+-----
+
+First you have to init it. Preferable place to do that, is your applicaion onCreate() method.
 ```java
     @Override
     public void onCreate() {
@@ -15,7 +22,7 @@ After that, it behaves similar to JUnit Asserts
 ```java
     private void updateUser(int userId)  {
         AssertDialog.assertTrue(userId > 0, "Trying to update user with id <= 0");
-	AssertDialog.assertTrue(isUserExists(userId));
+        AssertDialog.assertTrue(isUserExists(userId));
 	....
     }
 ```
