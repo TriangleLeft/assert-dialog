@@ -17,7 +17,8 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Created by lekz112 on 15.09.2015.
+ * Behaves same as JUnit Assert class.
+ * Shows alert dialog, blocking thread execution when assertion fails.
  * Based on http://stackoverflow.com/questions/6120567/android-how-to-get-a-modal-dialog-or-similar-modal-behavior/6198192#6198192
  */
 public class AssertDialog {
@@ -29,15 +30,33 @@ public class AssertDialog {
     private static Context sAppContext;
     private static boolean sDebug;
 
+    /**
+     * Init assert dialog.
+     * If debug is enabled, shows dialog during assertion fails, otherwise silently logs it.
+     *
+     * @param debug   debug mode
+     * @param context context to create dialog from.
+     */
     public static void init(boolean debug, Context context) {
         sAppContext = context;
         sDebug = debug;
     }
 
+    /**
+     * Assert that to objects are equal.
+     * @param expected
+     * @param actual
+     */
     public static void assertEquals(Object expected, Object actual) {
         assertEquals(null, expected, actual);
     }
 
+    /**
+     * Assert that object are equal with custom assertion message.
+     * @param message
+     * @param expected
+     * @param actual
+     */
     public static void assertEquals(String message, Object expected, Object actual) {
         boolean condition;
         if (expected == null) {
@@ -48,12 +67,20 @@ public class AssertDialog {
         assertTrue(message, condition);
     }
 
-    public static void assertTrue(boolean expression) {
-        assertTrue(null, expression);
+    /**
+     * Assert that condition is true.
+     */
+    public static void assertTrue(boolean condition) {
+        assertTrue(null, condition);
     }
 
-    public static void assertTrue(String message, boolean expression) {
-        if (!expression) {
+    /**
+     * Assert that condition is true with custom assert message.
+     * @param message
+     * @param condition
+     */
+    public static void assertTrue(String message, boolean condition) {
+        if (!condition) {
             fail(message);
         }
     }
@@ -190,11 +217,7 @@ public class AssertDialog {
             Message msg = null;
             try {
                 msg = (Message) sMsgQueueNextMethod.invoke(queue, new Object[]{});
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
 
@@ -202,9 +225,7 @@ public class AssertDialog {
                 Handler target = null;
                 try {
                     target = (Handler) sMsgTargetFiled.get(msg);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
 
