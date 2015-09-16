@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -25,10 +26,11 @@ public class AssertDialog {
 
     private static final String TAG = AssertDialog.class.getSimpleName();
     private static Method sMsgQueueNextMethod;
-    private static Field sMsgTargetFiled;
+    private static Field sMsgTargetField;
     private static boolean sQuitModal;
     private static Context sAppContext;
     private static boolean sDebug;
+    private static Method sMsgRecycleUnchecked;
 
     /**
      * Init assert dialog.
@@ -44,8 +46,6 @@ public class AssertDialog {
 
     /**
      * Assert that to objects are equal.
-     * @param expected
-     * @param actual
      */
     public static void assertEquals(Object expected, Object actual) {
         assertEquals(null, expected, actual);
@@ -53,9 +53,6 @@ public class AssertDialog {
 
     /**
      * Assert that object are equal with custom assertion message.
-     * @param message
-     * @param expected
-     * @param actual
      */
     public static void assertEquals(String message, Object expected, Object actual) {
         boolean condition;
@@ -76,8 +73,6 @@ public class AssertDialog {
 
     /**
      * Assert that condition is true with custom assert message.
-     * @param message
-     * @param condition
      */
     public static void assertTrue(String message, boolean condition) {
         if (!condition) {
@@ -88,15 +83,13 @@ public class AssertDialog {
     /**
      * Display assert dialog with message.
      */
-    public static void fail(String message) {
-        final String logMessage;
+    public static void fail(final String message) {
         if (message == null) {
-            logMessage = sAppContext.getString(R.string.assert_fail);
+            Log.wtf(TAG, sAppContext.getString(R.string.assert_fail), new Throwable());
         } else {
-            logMessage = message;
+            Log.wtf(TAG, message, new Throwable());
         }
 
-        Log.wtf(TAG, logMessage, new Throwable());
 
         // Don't show any dialogs in release version
         if (!sDebug) {
@@ -115,7 +108,8 @@ public class AssertDialog {
 
                 // build alert dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(sAppContext);
-                builder.setMessage(logMessage);
+                builder.setTitle(R.string.assert_fail);
+                builder.setMessage(message);
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.button_continue,
                         new DialogInterface.OnClickListener() {
@@ -182,7 +176,7 @@ public class AssertDialog {
         }
 
         try {
-            sMsgQueueNextMethod = clsMsgQueue.getDeclaredMethod("next", new Class[]{});
+            sMsgQueueNextMethod = clsMsgQueue.getDeclaredMethod("next");
         } catch (SecurityException e) {
             e.printStackTrace();
             return false;
@@ -194,7 +188,7 @@ public class AssertDialog {
         sMsgQueueNextMethod.setAccessible(true);
 
         try {
-            sMsgTargetFiled = clsMessage.getDeclaredField("target");
+            sMsgTargetField = clsMessage.getDeclaredField("target");
         } catch (SecurityException e) {
             e.printStackTrace();
             return false;
@@ -203,7 +197,21 @@ public class AssertDialog {
             return false;
         }
 
-        sMsgTargetFiled.setAccessible(true);
+        sMsgTargetField.setAccessible(true);
+
+        // Starting from lollipop we have to use unchecked version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            try {
+                sMsgRecycleUnchecked = clsMessage.getDeclaredMethod("recycleUnchecked");
+            } catch (SecurityException | NoSuchMethodException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            sMsgRecycleUnchecked.setAccessible(true);
+        }
+
         return true;
     }
 
@@ -216,7 +224,7 @@ public class AssertDialog {
             // call queue.next(), might block
             Message msg = null;
             try {
-                msg = (Message) sMsgQueueNextMethod.invoke(queue, new Object[]{});
+                msg = (Message) sMsgQueueNextMethod.invoke(queue);
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -224,7 +232,7 @@ public class AssertDialog {
             if (msg != null) {
                 Handler target = null;
                 try {
-                    target = (Handler) sMsgTargetFiled.get(msg);
+                    target = (Handler) sMsgTargetField.get(msg);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -236,7 +244,18 @@ public class AssertDialog {
                 }
 
                 target.dispatchMessage(msg);
-                msg.recycle();
+                // Starting from lollipop we have to use unchecked version
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    try {
+                        sMsgRecycleUnchecked.invoke(msg);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    msg.recycle();
+                }
             }
         }
     }

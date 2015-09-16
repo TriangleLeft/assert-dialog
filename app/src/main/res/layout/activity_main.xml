@@ -27,10 +27,4 @@
             android:layout_height="wrap_content"
             android:text="Handler Assert"/>
 
-    <Button
-            android:id="@+id/button_handler_multiple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Handler Multiple Assert"/>
-
 </LinearLayout>
