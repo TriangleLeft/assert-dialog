@@ -1,6 +1,9 @@
 #AssertDialog
 C#-like assert dialog.
-Shows modal dialog when assertion fails, blocking current thread.
+In debug mode: 
+shows modal dialog (current thread execution is paused), with two options: stop application, or continue execution.
+In release mode: 
+writes assert message with stacktrace to Log.wtf.
 
 ![](misc/assert.png)
 
@@ -9,7 +12,10 @@ Min SDK version - 14
 Usage
 -----
 
-First you have to init it. Preferable place to do that, is your applicaion onCreate() method.
+Before you start using it, you have to init it. Preferable place to do that, is your applicaion onCreate() method.
+First param - operation mode: debug or release.
+Second param - context to create dialog from.
+
 ```java
     @Override
     public void onCreate() {
