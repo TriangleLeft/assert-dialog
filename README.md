@@ -1,7 +1,9 @@
 #AssertDialog
 C#-like assert dialog.
+
 In debug mode: 
 shows modal dialog (current thread execution is paused), with two options: stop application, or continue execution.
+
 In release mode: 
 writes assert message with stacktrace to Log.wtf.
 
@@ -13,7 +15,9 @@ Usage
 -----
 
 Before you start using it, you have to init it. Preferable place to do that, is your applicaion onCreate() method.
+
 First param - operation mode: debug or release.
+
 Second param - context to create dialog from.
 
 ```java
@@ -29,7 +33,7 @@ After that, it behaves similar to JUnit Asserts
     private void updateUser(int userId)  {
         AssertDialog.assertTrue(userId > 0, "Trying to update user with id <= 0");
         AssertDialog.assertTrue(isUserExists(userId));
-	....
+        ....
     }
 ```
 
