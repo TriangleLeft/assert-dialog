@@ -29,19 +29,18 @@ public class AssertDialog {
     private static Field sMsgTargetField;
     private static boolean sQuitModal;
     private static Context sAppContext;
-    private static boolean sDebug;
+    private static AssertMode sMode;
     private static Method sMsgRecycleUnchecked;
 
     /**
      * Init assert dialog.
-     * If debug is enabled, shows dialog during assertion fails, otherwise silently logs it.
      *
-     * @param debug   debug mode
+     * @param mode    work mode
      * @param context context to create dialog from.
      */
-    public static void init(boolean debug, Context context) {
+    public static void init(AssertMode mode, Context context) {
         sAppContext = context;
-        sDebug = debug;
+        sMode = mode;
     }
 
     /**
@@ -90,10 +89,14 @@ public class AssertDialog {
             Log.wtf(TAG, message, new Throwable());
         }
 
-
-        // Don't show any dialogs in release version
-        if (!sDebug) {
-            return;
+        switch (sMode) {
+            case LOG:
+                return;
+            case THROW:
+                throw new AssertionError(message);
+            case DIALOG:
+            default:
+                break;
         }
 
         if (!prepareModal()) {
@@ -258,5 +261,23 @@ public class AssertDialog {
                 }
             }
         }
+    }
+
+    /**
+     * Work mode. Defines what to do in case that assertion fails.
+     */
+    public enum AssertMode {
+        /**
+         * Log assert to Log.wtf
+         */
+        LOG,
+        /**
+         * Show dialog, blocking current thread.
+         */
+        DIALOG,
+        /**
+         * Throw AssertionException
+         */
+        THROW
     }
 }
