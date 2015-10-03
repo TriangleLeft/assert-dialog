@@ -12,6 +12,6 @@ public class ExampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AssertDialog.init(true, getApplicationContext());
+        AssertDialog.init(AssertDialog.AssertMode.DIALOG, getApplicationContext());
     }
 }
