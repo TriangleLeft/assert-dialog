@@ -1,5 +1,7 @@
 #AssertDialog
-C#-like assert dialog. Shows modal dialog when assertion fails blocking current thread.
+C#-like assert dialog. Shows modal dialog when assertion fails blocking current thread. (So you can attach a debugger, or decide to stop application)
+
+You can either use it as same as Java's "assert" throwing AssertionError, or if you don't want to potentially block your team, as a dialog, allowing to skip asserts.
 
 ![](misc/assert.png)
 
@@ -8,17 +10,15 @@ Min SDK version - 14
 Usage
 -----
 
-Before you start using it, you have to init it. Preferable place to do that, is your applicaion onCreate() method.
+Before you start using it, you have to init it with operation mode and context. Preferable place to do that, is your applicaion onCreate() method.
 
-First param - operation mode
+There are three modes:
 
-AssertMode.DIALOG - shows modal dialog (current thread execution is paused), with two options: stop application, or continue execution.
+AssertMode.DIALOG - shows modal dialog (current thread execution is paused), with two options: stop application, or continue execution. Writes assert message with stacktrace to Log.wtf
 
-AssertMode.LOG - writes assert message with stacktrace to Log.wtf.
+AssertMode.LOG - only writes assert message with stacktrace to Log.wtf.
 
 AssertMode.THROW - throws AssertionException 
-
-Second param - context to create dialog from.
 
 ```java
     @Override
@@ -28,7 +28,7 @@ Second param - context to create dialog from.
     }
 ```
 
-After that, it behaves similar to JUnit Asserts
+After that, you can use it as JUnit Asserts
 ```java
     private void updateUser(int userId)  {
         AssertDialog.assertTrue(userId > 0, "Trying to update user with id <= 0");
