@@ -64,6 +64,20 @@ public class AssertDialog {
     }
 
     /**
+     * Assert that object is not null.
+     */
+    public static void assertNotNull(Object object) {
+        assertTrue(object == null);
+    }
+
+    /**
+     * Assert that object is not null with custom assertion message.
+     */
+    public static void assertNotNull(String message, Object object) {
+        assertTrue(message, object == null);
+    }
+
+    /**
      * Assert that condition is true.
      */
     public static void assertTrue(boolean condition) {

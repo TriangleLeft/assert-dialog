@@ -32,7 +32,7 @@ ext {
     siteUrl = 'https://github.com/TriangleLeft/assert-dialog'
     gitUrl = 'https://github.com/TriangleLeft/assert-dialog.git'
 
-    libraryVersion = '0.8.0'
+    libraryVersion = '0.8.1'
 
     developerId = 'lekz112'
     developerName = 'Aleksey Kurnosenko'

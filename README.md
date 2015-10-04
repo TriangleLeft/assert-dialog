@@ -13,7 +13,9 @@ Before you start using it, you have to init it. Preferable place to do that, is 
 First param - operation mode
 
 AssertMode.DIALOG - shows modal dialog (current thread execution is paused), with two options: stop application, or continue execution.
+
 AssertMode.LOG - writes assert message with stacktrace to Log.wtf.
+
 AssertMode.THROW - throws AssertionException 
 
 Second param - context to create dialog from.
@@ -22,7 +24,7 @@ Second param - context to create dialog from.
     @Override
     public void onCreate() {
         super.onCreate();
-        AssertDialog.init(true, getApplicationContext());
+        AssertDialog.init(AssertMode.DIALOG, getApplicationContext());
     }
 ```
 
