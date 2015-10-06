@@ -1,1 +1,1 @@
-include ':app', ':assertdialog'
+include ':app', ':assert-dialog'
