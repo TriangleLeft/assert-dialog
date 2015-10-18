@@ -23,7 +23,7 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'assert-dialog'
 
-    publishedGroupId = 'com.triangleleft'
+    publishedGroupId = 'com.triangleleft.assertdialog'
     libraryName = 'AssertDialog'
     artifact = 'assert-dialog'
 
@@ -32,7 +32,7 @@ ext {
     siteUrl = 'https://github.com/TriangleLeft/assert-dialog'
     gitUrl = 'https://github.com/TriangleLeft/assert-dialog.git'
 
-    libraryVersion = '0.8.2'
+    libraryVersion = '0.8.5'
 
     developerId = 'lekz112'
     developerName = 'Aleksey Kurnosenko'

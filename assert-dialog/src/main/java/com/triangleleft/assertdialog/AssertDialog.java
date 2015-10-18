@@ -47,47 +47,47 @@ public class AssertDialog {
      * Assert that to objects are equal.
      */
     public static void assertEquals(Object expected, Object actual) {
-        assertEquals(null, expected, actual);
+        assertEquals(expected, actual, null);
     }
 
     /**
      * Assert that object are equal with custom assertion message.
      */
-    public static void assertEquals(String message, Object expected, Object actual) {
+    public static void assertEquals(Object expected, Object actual, String message) {
         boolean condition;
         if (expected == null) {
             condition = actual == null;
         } else {
             condition = expected.equals(actual);
         }
-        assertTrue(message, condition);
+        assertTrue(condition, message);
     }
 
     /**
      * Assert that object is not null.
      */
     public static void assertNotNull(Object object) {
-        assertTrue(object == null);
+        assertNotNull(object, null);
     }
 
     /**
      * Assert that object is not null with custom assertion message.
      */
-    public static void assertNotNull(String message, Object object) {
-        assertTrue(message, object == null);
+    public static void assertNotNull(Object object, String message) {
+        assertTrue(object != null, message);
     }
 
     /**
      * Assert that condition is true.
      */
     public static void assertTrue(boolean condition) {
-        assertTrue(null, condition);
+        assertTrue(condition, null);
     }
 
     /**
      * Assert that condition is true with custom assert message.
      */
-    public static void assertTrue(String message, boolean condition) {
+    public static void assertTrue(boolean condition, String message) {
         if (!condition) {
             fail(message);
         }
@@ -97,6 +97,10 @@ public class AssertDialog {
      * Display assert dialog with message.
      */
     public static void fail(final String message) {
+        if (sAppContext == null || sMode == null) {
+            throw new IllegalStateException("You have to call init() first");
+        }
+
         if (message == null) {
             Log.wtf(TAG, sAppContext.getString(R.string.assert_fail), new Throwable());
         } else {
