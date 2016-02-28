@@ -1,7 +1,5 @@
 package com.triangleleft.assertdialog;
 
-import org.junit.ComparisonFailure;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -112,14 +110,8 @@ public class AssertDialog {
         if (equalsRegardingNull(expected, actual)) {
             return;
         }
-        if (expected instanceof String && actual instanceof String) {
-            String cleanMessage = message == null ? "" : message;
-            ComparisonFailure comparisonFailure = new ComparisonFailure(cleanMessage, (String) expected,
-                    (String) actual);
-            fail(comparisonFailure.getMessage());
-        } else {
-            failNotEquals(message, expected, actual);
-        }
+
+        failNotEquals(message, expected, actual);
     }
 
     private static boolean equalsRegardingNull(Object expected, Object actual) {
